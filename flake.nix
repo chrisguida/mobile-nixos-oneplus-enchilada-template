@@ -12,8 +12,9 @@
     nixos-shell.url = "github:Mic92/nixos-shell";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-software-center.url = "github:vlinkz/nix-software-center";
+    nix-bitcoin.url = "github:chrisguida/nix-bitcoin/no-err-zero-feerate";
   };
-  outputs = { self, nixpkgs, mobile-nixos, nix-software-center, nixos-shell, flake-parts }@inputs:
+  outputs = { self, nixpkgs, mobile-nixos, nix-software-center, nixos-shell, flake-parts, nix-bitcoin }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./flake-modules/phoneImages.nix
@@ -36,6 +37,7 @@
             system = "aarch64-linux";
             modules = [
               (import "${mobile-nixos}/lib/configuration.nix" { device = "oneplus-enchilada"; })
+              nix-bitcoin.nixosModules.default
               ./opinions/configuration.nix
             ];
             specialArgs = { inherit inputs; };
