@@ -11,6 +11,14 @@
   # networking services
   services.openssh.enable = true;
   services.tailscale.enable = true;
+  services.avahi = {
+    enable = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+    };
+  };
 
   # users
   users.users.root = {
@@ -59,6 +67,7 @@
 
   # nix-bitcoin stuff
   nix-bitcoin.generateSecrets = true;
+  nix-bitcoin.nodeinfo.enable = true;
   services.bitcoind = {
     enable = true;
     disablewallet = true;
@@ -68,4 +77,20 @@
     enable = true;
     address = "0.0.0.0";
   };
+  services.clightning-rest = {
+    enable = true;
+    lndconnect = {
+      enable = true;
+      onion = true;
+    };
+  };
+  services.rtl = {
+    enable = true;
+    nodes.clightning.enable = true;
+  };
+  services.fulcrum = {
+    enable = true;
+    address = "0.0.0.0";
+  };
+  networking.firewall.allowedTCPPorts = [ 3001 8333 9735 50001 ];
 }

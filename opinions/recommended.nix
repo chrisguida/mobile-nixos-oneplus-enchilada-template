@@ -14,6 +14,11 @@
     git
     firefox
     inputs.nix-software-center.packages.${pkgs.hostPlatform.system}.default
+    ripgrep
+    htop
+#    python311
+    ripgrep
+    jq
   ];
 
   nix = {
