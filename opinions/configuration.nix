@@ -1,3 +1,12 @@
+{ pkgs, ... }:
+let
+  low-mem-build-bitcoind = pkgs.bitcoind.overrideAttrs (oldAttrs: {
+    # Use preConfigure to explicitly set the CXXFLAGS
+    preConfigure = ''
+      export CXXFLAGS="${oldAttrs.CXXFLAGS or ""} --param ggc-min-expand=1 --param ggc-min-heapsize=32768"
+    '';
+  });
+in
 {
   imports = [
     ./gnome-mobile
@@ -5,8 +14,13 @@
     ./quirks.nix
     ./recommended.nix
   ];
-  networking.hostName = "nix-enchilada";
+
+  # nixpkgs config
   nixpkgs.config.allowUnfree = true;
+
+  # networking config
+  networking.hostName = "nix-enchilada";
+  networking.firewall.allowedTCPPorts = [ 3001 8333 9735 50001 ];
 
   # networking services
   services.openssh.enable = true;
@@ -69,6 +83,7 @@
   nix-bitcoin.generateSecrets = true;
   nix-bitcoin.nodeinfo.enable = true;
   services.bitcoind = {
+    package = low-mem-build-bitcoind;
     enable = true;
     disablewallet = true;
     txindex = true;
@@ -92,5 +107,21 @@
     enable = true;
     address = "0.0.0.0";
   };
-  networking.firewall.allowedTCPPorts = [ 3001 8333 9735 50001 ];
+  # enable Tor hidden services, and tor client
+  services.tor = {
+    enable = true;
+    client.enable = true;
+  };
+
+  # enable mempool service, use Fulcrum as backend for address lookups,
+  # and enable Tor hidden service for mempool
+  services.mempool = {
+    enable = true;
+    electrumServer = "fulcrum";
+    tor = {
+      proxy = true;
+      enforce = true;
+    };
+  };
+  nix-bitcoin.onionServices.mempool-frontend.enable = true;
 }

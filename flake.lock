@@ -86,16 +86,16 @@
         "nixpkgs-unstable": "nixpkgs-unstable"
       },
       "locked": {
-        "lastModified": 1696122487,
-        "narHash": "sha256-x6OklTgV38JawvBLl2OSNUmW/KZtruMU49Np9IKaTi8=",
+        "lastModified": 1696353850,
+        "narHash": "sha256-U6kXHYsEvPZGb37YZ6w6KqKPLjVFTzd4RsWA41MhbNg=",
         "owner": "chrisguida",
         "repo": "nix-bitcoin",
-        "rev": "8b3a5a60d8165aa0595033825b1906865eec0dc6",
+        "rev": "cee2ce8298edd1a1649c4f55fff30ebe70be0e00",
         "type": "github"
       },
       "original": {
         "owner": "chrisguida",
-        "ref": "no-err-zero-feerate",
+        "ref": "mempool-and-fix-no-feerate",
         "repo": "nix-bitcoin",
         "type": "github"
       }

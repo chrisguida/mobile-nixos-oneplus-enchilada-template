@@ -12,7 +12,7 @@
     nixos-shell.url = "github:Mic92/nixos-shell";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-software-center.url = "github:vlinkz/nix-software-center";
-    nix-bitcoin.url = "github:chrisguida/nix-bitcoin/no-err-zero-feerate";
+    nix-bitcoin.url = "github:chrisguida/nix-bitcoin/mempool-and-fix-no-feerate";
   };
   outputs = { self, nixpkgs, mobile-nixos, nix-software-center, nixos-shell, flake-parts, nix-bitcoin }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
