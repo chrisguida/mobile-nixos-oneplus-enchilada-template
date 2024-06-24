@@ -5,6 +5,12 @@ let
     preConfigure = ''
       export CXXFLAGS="${oldAttrs.CXXFLAGS or ""} --param ggc-min-expand=1 --param ggc-min-heapsize=32768"
     '';
+#    src = pkgs.fetchFromGitHub {
+#      owner = "benthecarman";
+#      repo = "bitcoin";
+#      rev = "5706e1f94c3feca2bdf894fa7b770445addd6e89";
+#      sha256 = "";
+#    };
   });
 in
 {

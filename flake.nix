@@ -5,6 +5,7 @@
   };
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+#    nixpkgs.follows = "nix-bitcoin/nixpkgs";
     mobile-nixos = {
       url = "github:matthewcroughan/mobile-nixos/7a6e97e3af73c4cca87e12c83abcb4913dac7dbc";
       flake = false;
@@ -12,7 +13,7 @@
     nixos-shell.url = "github:Mic92/nixos-shell";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-software-center.url = "github:vlinkz/nix-software-center";
-    nix-bitcoin.url = "github:chrisguida/nix-bitcoin/mempool-and-fix-no-feerate";
+    nix-bitcoin.url = "github:chrisguida/nix-bitcoin/cguida/bitcoind-mutinynet";
   };
   outputs = { self, nixpkgs, mobile-nixos, nix-software-center, nixos-shell, flake-parts, nix-bitcoin }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
