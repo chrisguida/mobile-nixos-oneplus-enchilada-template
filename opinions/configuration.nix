@@ -1,16 +1,19 @@
 { pkgs, ... }:
 let
-  low-mem-build-bitcoind = pkgs.bitcoind.overrideAttrs (oldAttrs: {
-    # Use preConfigure to explicitly set the CXXFLAGS
-    preConfigure = ''
-      export CXXFLAGS="${oldAttrs.CXXFLAGS or ""} --param ggc-min-expand=1 --param ggc-min-heapsize=32768"
-    '';
-#    src = pkgs.fetchFromGitHub {
-#      owner = "benthecarman";
-#      repo = "bitcoin";
-#      rev = "5706e1f94c3feca2bdf894fa7b770445addd6e89";
-#      sha256 = "";
-#    };
+  low-mem-build-bitcoind-mutinynet = pkgs.bitcoind.overrideAttrs (oldAttrs: {
+#    # Use preConfigure to explicitly set the CXXFLAGS
+#    preConfigure = ''
+#      export CXXFLAGS="${oldAttrs.CXXFLAGS or ""} --param ggc-min-expand=1 --param ggc-min-heapsize=32768"
+#    '';
+    src = pkgs.fetchFromGitHub {
+      owner = "benthecarman";
+      repo = "bitcoin";
+      rev = "5706e1f94c3feca2bdf894fa7b770445addd6e89";
+      sha256 = "sha256-d2VXp/a545E7kuS04ByK4WD6BBJ1+Oz2jF17bNJZbU0=";
+    };
+    doCheck = false;
+    withGui = false;
+    withWallet = false;
   });
 in
 {
@@ -25,7 +28,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   # networking config
-  networking.hostName = "nix-enchilada";
+  networking.hostName = "nix-enchilada-1";
   networking.firewall.allowedTCPPorts = [ 3001 8333 9735 50001 ];
 
   # networking services
@@ -82,6 +85,7 @@ in
         "video"
         "wheel"
       ];
+      password = "default";
     };
   };
 
@@ -89,7 +93,7 @@ in
   nix-bitcoin.generateSecrets = true;
   nix-bitcoin.nodeinfo.enable = true;
   services.bitcoind = {
-    package = low-mem-build-bitcoind;
+    package = low-mem-build-bitcoind-mutinynet;
     enable = true;
     disablewallet = true;
     txindex = true;
