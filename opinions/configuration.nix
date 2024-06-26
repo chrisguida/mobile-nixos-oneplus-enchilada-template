@@ -28,7 +28,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   # networking config
-  networking.hostName = "nix-enchilada";
+#  networking.hostName = "nix-enchilada";
   networking.firewall.allowedTCPPorts = [ 3001 8333 9735 50001 ];
 
   # networking services

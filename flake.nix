@@ -16,6 +16,18 @@
     nix-bitcoin.url = "github:chrisguida/nix-bitcoin/cguida/bitcoind-mutinynet";
   };
   outputs = { self, nixpkgs, mobile-nixos, nix-software-center, nixos-shell, flake-parts, nix-bitcoin }@inputs:
+    let
+      makeEnchiladaConfig = hostname: nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          (import "${mobile-nixos}/lib/configuration.nix" { device = "oneplus-enchilada"; })
+          nix-bitcoin.nixosModules.default
+          ./opinions/configuration.nix
+          { networking.hostName = hostname; }
+        ];
+        specialArgs = { inherit inputs; };
+      };
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./flake-modules/phoneImages.nix
@@ -26,24 +38,10 @@
       ];
       flake = { ... }: {
         nixosConfigurations = {
-          oneplus-fajita = nixpkgs.lib.nixosSystem {
-            system = "aarch64-linux";
-            modules = [
-              (import "${mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
-              ./opinions/configuration.nix
-            ];
-            specialArgs = { inherit inputs; };
-          };
-          oneplus-enchilada = nixpkgs.lib.nixosSystem {
-            system = "aarch64-linux";
-            modules = [
-              (import "${mobile-nixos}/lib/configuration.nix" { device = "oneplus-enchilada"; })
-              nix-bitcoin.nixosModules.default
-              ./opinions/configuration.nix
-            ];
-            specialArgs = { inherit inputs; };
-          };
+          nix-enchilada = makeEnchiladaConfig "nix-enchilada";
+          nix-enchilada-1 = makeEnchiladaConfig "nix-enchilada-1";
         };
       };
     };
 }
+
