@@ -28,7 +28,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   # networking config
-  networking.hostName = "nix-enchilada-1";
+  networking.hostName = "nix-enchilada";
   networking.firewall.allowedTCPPorts = [ 3001 8333 9735 50001 ];
 
   # networking services
@@ -101,6 +101,14 @@ in
   services.clightning = {
     enable = true;
     address = "0.0.0.0";
+    tor = {
+      proxy = true;
+#      enforce = true;
+    };
+  };
+  nix-bitcoin.onionServices.clightning = {
+    enable = true;
+    public = true;
   };
   services.clightning-rest = {
     enable = true;
