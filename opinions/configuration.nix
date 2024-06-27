@@ -105,6 +105,24 @@ in
       proxy = true;
 #      enforce = true;
     };
+    plugins = {
+      clboss = {
+        enable = true;
+        package = pkgs.clboss.overrideAttrs (oldAttrs: let
+          originalBuildInputs = oldAttrs.buildInputs or [];
+          originalNativeBuildInputs = oldAttrs.nativeBuildInputs or [];
+        in {
+          src = pkgs.fetchFromGitHub {
+            owner = "ZmnSCPxj";
+            repo = "clboss";
+            rev = "508a4fe903e1c2c611a025ab8ed8891311c3e715";
+            sha256 = "sha256-rGc4k5IxJfDwTe/OPaPQM5y8hGNAXBRpwGHLxYrE12Y=";
+          };
+          buildInputs = originalBuildInputs ++ [ pkgs.autoconf-archive pkgs.autoreconfHook ];
+          nativeBuildInputs = originalNativeBuildInputs ++ [ pkgs.autoreconfHook ];
+        });
+      };
+    };
   };
   nix-bitcoin.onionServices.clightning = {
     enable = true;
