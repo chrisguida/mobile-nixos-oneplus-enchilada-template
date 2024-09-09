@@ -160,4 +160,12 @@ in
     };
   };
   nix-bitcoin.onionServices.mempool-frontend.enable = true;
+  services.btcpayserver = {
+    enable = true;
+    lightningBackend = "clightning";
+  };
+  services.nbxplorer.package = (builtins.getFlake "github:matthewcroughan/nix-mutinynet/60aaa1771301ad14fd5682f815e7b74896323872").packages.aarch64-linux.nbxplorer;
+  systemd.tmpfiles.rules = [
+    "L /var/lib/nbxplorer/signet/.cookie - - - - /var/lib/nbxplorer/Signet/.cookie"
+  ];
 }

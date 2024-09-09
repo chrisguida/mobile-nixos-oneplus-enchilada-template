@@ -38,6 +38,25 @@
       ];
       flake = { ... }: {
         nixosConfigurations = {
+          oneplus-fajita = nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            modules = [
+              (import "${mobile-nixos}/lib/configuration.nix" { device = "oneplus-fajita"; })
+              nix-bitcoin.nixosModules.default
+              ./opinions/configuration.nix
+            ];
+            specialArgs = { inherit inputs; };
+          };
+          oneplus-enchilada = nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            modules = [
+              (import "${mobile-nixos}/lib/configuration.nix" { device = "oneplus-enchilada"; })
+              nix-bitcoin.nixosModules.default
+              ./opinions/configuration.nix
+              { networking.hostName = "oneplus-enchilada"; }
+            ];
+            specialArgs = { inherit inputs; };
+          };
           nix-enchilada = makeEnchiladaConfig "nix-enchilada";
           nix-enchilada-1 = makeEnchiladaConfig "nix-enchilada-1";
         };
